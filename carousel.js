@@ -6,23 +6,57 @@ class Carousel {
     this.carouselOptions = ['previous', 'add', 'next']; 
     this.carouselData = [
       {
-        'id': '1',
-        'content': '<div class="carousel-content"><h1>Our Vision</h1><p>We are building a platform where individuals progress together, fostering a supportive ecosystem driven by impactful collaboration. 🌱 It is about community, not just profits. Join us in shaping a future where everyone succeeds! 🚀✨</p></div>',
+        id: '1',
+        content: `
+          <div class="carousel-content">
+            <h1>Our Vision</h1>
+            <p>We are building a platform where individuals progress together, fostering a supportive ecosystem driven by impactful collaboration. 🌱 It is about community, not just profits. Join us in shaping a future where everyone succeeds! 🚀✨</p>
+          </div>`
       },
       {
-        'id': '2',
-        'content': '<div class="carousel-content"><div><h1>Join Us!!</h1><p>Set sail on a voyage of discovery! 🚀 Join our circle of innovators and let your dreams take wing. Register, meet the criteria, and together, we’ll soar to success! 🌟🛫</p></div></div>',
+        id: '2',
+        content: `
+          <div class="carousel-content">
+            <div>
+              <h1>Join Us!!</h1>
+              <p>Set sail on a voyage of discovery! 🚀 Join our circle of innovators and let your dreams take wing. Register, meet the criteria, and together, we’ll soar to success! 🌟🛫</p>
+            </div>
+          </div>`
       },
       {
-        "id": "3",
-        "content": "<div class=\"carousel-content\"><div><h1>Follow Us!!</h1></div><div class = \"follow\"><div class = \"imgclass\"><img src=\"Untitled.png\" alt=\"\" ><p>Check out our first video</p></div><div class=\"socialtags3\"><a href=\"https://www.youtube.com/watch?v=cpoXLj24BDY\" id=\"socioanchor\"><p id=\"socialp\"><img src=\"Group 1171275184.svg\" alt=\"\">/JavascriptKJcoding</p></a><a href=\"https://www.linkedin.com/in/aryan-wattamwar-9b270a219/\" id=\"socioanchor\"><p id=\"socialp\"><img src=\"Group 1171275183.svg\" alt=\"\">/AryanWattamwar</p></a><a href=\"https://www.instagram.com/aryanmadhukarwattamwar/\" id=\"socioanchor\"><p id=\"socialp\"><img src=\"Group 1171275182.svg\" alt=\"\">@AryanWattamwar</p></a><a href=\"https://www.instagram.com/startwithsmall/\" id=\"socioanchor\"><p id=\"socialp\"><img src=\"Group 1171275182.svg\" alt=\"\">@StartwithSmall</p></a></div></div></div>"
+        id: '3',
+        content: `
+          <div class="carousel-content">
+            <div>
+              <h1>Follow Us!!</h1>
+            </div>
+            <div class="follow">
+              <div class="imgclass">
+                <img src="Untitled.png" alt="">
+                <p>Check out our first video</p>
+              </div>
+              <div class="socialtags3">
+                <a href="https://www.youtube.com/watch?v=cpoXLj24BDY" id="socioanchor">
+                  <p id="socialp"><img src="Group 1171275184.svg" alt="">/JavascriptKJcoding</p>
+                </a>
+                <a href="https://www.linkedin.com/in/aryan-wattamwar-9b270a219/" id="socioanchor">
+                  <p id="socialp"><img src="Group 1171275183.svg" alt="">/AryanWattamwar</p>
+                </a>
+                <a href="https://www.instagram.com/aryanmadhukarwattamwar/" id="socioanchor">
+                  <p id="socialp"><img src="Group 1171275182.svg" alt="">@AryanWattamwar</p>
+                </a>
+                <a href="https://www.instagram.com/startwithsmall/" id="socioanchor">
+                  <p id="socialp"><img src="Group 1171275182.svg" alt="">@StartwithSmall</p>
+                </a>
+              </div>
+            </div>
+          </div>`
       }
-      
     ];
     this.carouselInView = [1, 2, 3];
-    this.carouselContainer;
-    this.carouselDots;
-    this.carouselPlayState;
+    this.carouselContainer = null;
+    this.carouselDots = null;
+    this.carouselPlayState = null;
   }
 
   mounted() {
@@ -65,18 +99,22 @@ class Carousel {
     controls.forEach(control => {
       control.onclick = (event) => {
         event.preventDefault();
-
         this.controlManager(control.dataset.name);
       };
     });
   }
 
   controlManager(control) {
-    if (control === 'previous') return this.previous();
-    if (control === 'next') return this.next();
-    if (control === 'add') return this.add();
-
-    return;
+    switch (control) {
+      case 'previous':
+        return this.previous();
+      case 'next':
+        return this.next();
+      case 'add':
+        return this.add();
+      default:
+        return;
+    }
   }
 
   next() {
@@ -95,11 +133,10 @@ class Carousel {
   }
 
   updateDots() {
-    const dots = this.carouselDots.children;
-    for (let i = 0; i < dots.length; i++) {
-      dots[i].classList.remove('active');
-    }
-    dots[this.carouselInView[0] - 1].classList.add('active');
+    Array.from(this.carouselDots.children).forEach(dot => {
+      dot.classList.remove('active');
+    });
+    this.carouselDots.children[this.carouselInView[0] - 1].classList.add('active');
   }
 
   startAutoSlide() {
@@ -107,6 +144,7 @@ class Carousel {
   }
 }
 
+// Initialize Carousel
 const el = document.querySelector('.carousel');
 const exampleCarousel = new Carousel(el);
 exampleCarousel.mounted();
